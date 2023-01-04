@@ -12,15 +12,21 @@ const App = () => {
   // sync up with, if any.
 
   const [data,setData] = useState()
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(()=>{
-    axios.get(`https://swapi.dev/api/people`)
-    .then(res=>{setData(res.data.results)})
+    axios.get(`https://swapi.dev/api/people/`)
+    .then(res=>{
+      setData(res.data) 
+      setLoading(false)
+    })
     .catch(err=>{console.log(err)})
   },[])
 
-  console.log(data ? data: '...')
-  if(data){
+  if (isLoading) {
+    return <div className="App">Loading...</div>;
+  }
+
   return (
     <div className="App">
       <h1 className="Header">Characters</h1>
@@ -28,12 +34,8 @@ const App = () => {
         return <Character charData={char}/>
       })}
     </div>
-  );}
-  else return (
-    <div className="App">
-      <h1 className="Header">Characters</h1>
-    </div>
-  )
+  );
+
 }
 
 export default App;
